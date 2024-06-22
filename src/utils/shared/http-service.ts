@@ -6,23 +6,16 @@ interface Config {
   transformToCamelCase?: boolean;
 }
 
-export interface IHttpService {
-  get: Axios["get"];
-  post: Axios["post"];
-  put: Axios["put"];
-  delete: Axios["delete"];
-}
-export class HttpService implements IHttpService {
+export class HttpService {
   private axiosInstance;
 
   constructor(private readonly config?: Config) {
     this.axiosInstance = axios.create({
-      // You can set base URL and other configurations here
       baseURL: apiBaseUrl,
     });
   }
 
-  public async get<T>(...args: Parameters<Axios["get"]>): Promise<T> {
+  public async get<T>(...args: Parameters<Axios["get"]>): Promise<AxiosResponse<T>> {
     try {
       return this.transformResponse(await this.axiosInstance.get<T>(...args));
     } catch (error) {
@@ -31,7 +24,7 @@ export class HttpService implements IHttpService {
     }
   }
 
-  public async post<T>(...args: Parameters<Axios["post"]>): Promise<T> {
+  public async post<T>(...args: Parameters<Axios["post"]>): Promise<AxiosResponse<T>> {
     try {
       return this.transformResponse(await this.axiosInstance.post<T>(...args));
     } catch (error) {
@@ -40,7 +33,7 @@ export class HttpService implements IHttpService {
     }
   }
 
-  public async put<T>(...args: Parameters<Axios["put"]>): Promise<T> {
+  public async put<T>(...args: Parameters<Axios["put"]>): Promise<AxiosResponse<T>> {
     try {
       return this.transformResponse(await this.axiosInstance.put<T>(...args));
     } catch (error) {
@@ -48,7 +41,7 @@ export class HttpService implements IHttpService {
     }
   }
 
-  public async delete<T>(...args: Parameters<Axios["delete"]>): Promise<T> {
+  public async delete<T>(...args: Parameters<Axios["delete"]>): Promise<AxiosResponse<T>> {
     try {
       return this.transformResponse(await this.axiosInstance.delete<T>(...args));
     } catch (error) {
@@ -57,10 +50,10 @@ export class HttpService implements IHttpService {
     }
   }
 
-  private transformResponse<T>(response: AxiosResponse<T>): T {
+  private transformResponse<T>(response: AxiosResponse<T>) {
     if (this.config?.transformToCamelCase) {
-      return transformSnakeCaseToCamelCase(response.data);
+      return { ...response, data: transformSnakeCaseToCamelCase(response.data) };
     }
-    return response.data;
+    return response;
   }
 }

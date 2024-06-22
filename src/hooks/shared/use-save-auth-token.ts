@@ -26,11 +26,7 @@ const getAccessToken = () => {
 export function useSaveAuthToken() {
   const { tokenType, accessToken, expiresIn } = getAccessToken();
 
-  const {
-    data: user,
-    isLoading,
-    error,
-  } = useSWR(
+  const { data, isLoading, error } = useSWR(
     DISCORD_AUTH_URL,
     (url) =>
       new HttpService({ transformToCamelCase: true }).get<User>(url, {
@@ -46,7 +42,7 @@ export function useSaveAuthToken() {
     trigger,
     error: tokenSaveError,
   } = useSWRMutation("/discord/auth", () =>
-    new HttpService().post<{ message: string }>(`${apiBaseUrl}/discord/auth`, {
+    new HttpService().post<User>(`${apiBaseUrl}/discord/auth`, {
       token: accessToken,
     })
   );
@@ -58,11 +54,11 @@ export function useSaveAuthToken() {
     }
     document.cookie = `token=${accessToken}; path=/; max-age=${expiresIn}; samesite=strict`;
     trigger().then((res) => {
-      if (res.message) {
+      if (res.status === 200) {
         location.hash = "";
       }
     });
   }, [isLoading, error, accessToken]);
 
-  return { user, isLoading: isLoading || isMutating, error: tokenSaveError || error };
+  return { user: data?.data, isLoading: isLoading || isMutating, error: tokenSaveError || error };
 }
