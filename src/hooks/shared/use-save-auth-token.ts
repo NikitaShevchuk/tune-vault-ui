@@ -42,9 +42,13 @@ export function useSaveAuthToken() {
     trigger,
     error: tokenSaveError,
   } = useSWRMutation("/discord/auth", () =>
-    new HttpService().post<User>(`${apiBaseUrl}/discord/auth`, {
-      token: accessToken,
-    })
+    new HttpService().post<User>(
+      `${apiBaseUrl}/discord/auth`,
+      {
+        token: accessToken,
+      },
+      { headers: { Authorization: `${tokenType} ${accessToken}` } }
+    )
   );
 
   // Save auth token
