@@ -3,10 +3,10 @@
 import { Alert, Avatar, Spinner, Typography } from "@material-tailwind/react";
 
 import React from "react";
-import { useSaveAuthToken } from "@/hooks";
+import { useUser } from "src/hooks";
 
 export function AuthorizationResult() {
-  const { error, isLoading, user } = useSaveAuthToken();
+  const { error, isLoading, user } = useUser();
 
   if (isLoading) {
     return (
