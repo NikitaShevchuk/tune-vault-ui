@@ -8,7 +8,7 @@ import { User } from "src/models";
 
 export function useUser() {
   const { data, isLoading, error } = useSWR(
-    `${apiBaseUrl}/auth/me`,
+    `${apiBaseUrl}/user/me`,
     (url) => new HttpService().get<User>(url),
     { revalidateOnFocus: false, shouldRetryOnError: false }
   );
