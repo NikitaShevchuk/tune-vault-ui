@@ -10,7 +10,7 @@ import {
 import React from "react";
 
 import { PowerIcon } from "@heroicons/react/24/solid";
-import { useUser } from "src/hooks";
+import { useLogout, useUser } from "src/hooks";
 import Image from "next/image";
 
 const profileMenuItems = [
@@ -29,6 +29,7 @@ const profileMenuItems = [
 export function ProfileMenu() {
   const { user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { logout } = useLogout();
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -59,7 +60,7 @@ export function ProfileMenu() {
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={isLastItem ? () => logout() : closeMenu}
               className={`flex items-center gap-2 rounded ${
                 isLastItem
                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"

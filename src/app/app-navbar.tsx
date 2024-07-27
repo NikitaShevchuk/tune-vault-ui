@@ -40,7 +40,7 @@ export function AppNavbar() {
         <div className="flex items-center gap-2 py-1.5">
           <Image src={LogoLight} className="w-5 h-5" alt="Logo" priority />
           <Typography className="cursor-pointer font-bold">
-            Tune Vault
+            <Link href="/">Tune Vault</Link>
           </Typography>
         </div>
         <div className="flex items-center gap-2">

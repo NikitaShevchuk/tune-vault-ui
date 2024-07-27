@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 import "./globals.css";
 import { MTThemeProvider } from "src/app/MT-theme-provider";
@@ -10,6 +11,18 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Tune Vault",
   description: "Effortlessly play music on your favorite Discord server!",
+  icons: {
+    icon: [
+      {
+        url: "/logo-dark.svg",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/logo-light.svg",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -25,6 +38,7 @@ export default function RootLayout({
           <div className="bg-[conic-gradient(at_bottom_left,_var(--tw-gradient-stops))] from-blue-gray-900 via-blue-gray-900 to-gray-900 text-blue-gray-100 h-screen flex flex-col items-center">
             <AppNavbar />
             <div className="h-[calc(100vh-72px)]">{children}</div>
+            <Toaster />
           </div>
         </body>
       </html>
