@@ -10,7 +10,7 @@ export function useUser() {
   const { data, isLoading, error } = useSWR(
     `${apiBaseUrl}/user/me`,
     (url) => new HttpService().get<User>(url),
-    { revalidateOnFocus: false, shouldRetryOnError: false }
+    { revalidateOnFocus: false, shouldRetryOnError: false },
   );
 
   const user = data?.data;
